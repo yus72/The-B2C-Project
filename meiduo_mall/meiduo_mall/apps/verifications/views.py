@@ -14,6 +14,8 @@ from rest_framework import status
 from . import constants
 from .serializers import ImageCodeCheckSerializer
 from meiduo_mall.utils.yuntongxun.sms import CCP
+from celery_tasks.sms.tasks import send_sms_code
+
 
 
 logger = logging.getLogger('django')
@@ -70,7 +72,7 @@ class SMSCodeView(GenericAPIView):
 
         #发送短信
         # try:
-        #     expires = str(constants.SMS_CODE_REDIS_EXPIRES // 60)
+        #     expires = constants.SMS_CODE_REDIS_EXPIRES // 60
         #     ccp = CCP()
         #     result = ccp.send_template_sms(mobile, [sms_code, expires], constants.SMS_CODE_TEMP_ID)
         # except Exception as e:
@@ -83,5 +85,11 @@ class SMSCodeView(GenericAPIView):
         #     else:
         #         logger.warning("发送验证码短信[失败][ mobile: %s ]" % mobile)
         #         return Response({"message": "failed"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response({"message": "OK"})
 
+
+        #使用celery发送短信验证码
+        expires = constants.SMS_CODE_REDIS_EXPIRES // 60
+
+        send_sms_code.delay(mobile, sms_code, expires, constants.SMS_CODE_TEMP_ID)
+
+        return Response({"message": "OK"})
