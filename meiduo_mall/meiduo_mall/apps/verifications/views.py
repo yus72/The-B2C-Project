@@ -33,9 +33,7 @@ class ImageCodeView(APIView):
         redis_conn = get_redis_connection('verify_codes')
         redis_conn.setex("img_%s" % image_code_id, constants.IMAGE_CODE_REDIS_EXPIRES, text)
 
-
         # 返回图片给前端
-
         return HttpResponse(image, content_type='image/jpg')
 
 
