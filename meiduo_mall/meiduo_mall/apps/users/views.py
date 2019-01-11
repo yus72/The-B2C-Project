@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from rest_framework.generics import CreateAPIView
+from . import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
@@ -42,3 +44,22 @@ class MobileCountView(APIView):
         }
 
         return Response(data)
+
+
+# url(r'^users/$', views.UserView.as_view()),
+class UserView(CreateAPIView):
+    """
+    用户注册
+    传入参数：
+        username, password, password2, sms_code, mobile, allow
+    """
+
+    serializer_class = serializers.CreateUserSerializer
+
+    # 接受参数
+
+    # 校验参数
+
+    # 保存用户数据，密码加密
+
+    # 序列化返回数据
