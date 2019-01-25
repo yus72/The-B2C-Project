@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+
 from . import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -63,3 +65,30 @@ class UserView(CreateAPIView):
     # 保存用户数据，密码加密
 
     # 序列化返回数据
+
+
+# GET /user/
+class UserDetailView(RetrieveAPIView):
+    """
+    用户详情
+    """
+    serializer_class = serializers.UserDetailSerializer
+    permission_classes = [IsAuthenticated] #具体的权限配置，必须登陆后才能访问
+
+    def get_object(self):
+        # 返回当前请求的对象
+
+        # 在Django的请求request中，user属性表明当前请求的用户
+        return self.request.user
+
+
+# PUT /email/
+class EmailView(UpdateAPIView):
+    """
+    保存用户邮箱
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.EmailSerializer
+
+    def get_object(self, *args, **kwargs):
+        return self.request.user
