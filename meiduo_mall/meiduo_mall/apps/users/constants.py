@@ -4,3 +4,5 @@
 # @FileName: constants.py
 # @Software: PyCharm
 VERIFY_EMAIL_TOKEN_EXPIRES = 24 * 60 * 60
+
+USER_ADDRESS_COUNTS_LIMIT = 20
