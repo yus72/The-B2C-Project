@@ -11,3 +11,5 @@ admin.site.register(models.SpecificationOption)
 admin.site.register(models.SKU)
 admin.site.register(models.SKUSpecification)
 admin.site.register(models.SKUImage)
+
+
