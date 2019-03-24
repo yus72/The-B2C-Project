@@ -38,7 +38,6 @@ class OAuthQQUserSerializer(serializers.ModelSerializer):
             }
         }
 
-
         # 校验数据
     def validate(self, attrs):
 
@@ -47,7 +46,6 @@ class OAuthQQUserSerializer(serializers.ModelSerializer):
 
 
         openid = OAuthQQ.check_bind_user_access_token(access_token)
-
 
         if not openid:
             raise serializers.ValidationError('无效的access_token')
@@ -101,4 +99,5 @@ class OAuthQQUserSerializer(serializers.ModelSerializer):
 
         user.token = token
 
+        self.context["view"].user = user
         return user
